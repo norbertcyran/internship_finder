@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'internship_finder.companies'
+    'internship_finder.companies',
+    'internship_finder.core'
 ]
 
 MIDDLEWARE = [
