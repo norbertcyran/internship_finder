@@ -12,6 +12,7 @@ python-dotenv = "*"
 djangorestframework = "*"
 pillow = "*"
 django-countries = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.7"
