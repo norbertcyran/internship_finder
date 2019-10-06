@@ -19,12 +19,12 @@ class Announcement(TimeStampedModel, TitleDescriptionModel):
 
     paid = models.BooleanField()
 
-    pay_range_bottom = models.IntegerField(
+    pay_range_bottom = models.PositiveIntegerField(
         null=True,
         blank=True
     )
 
-    pay_range_top = models.IntegerField(
+    pay_range_top = models.PositiveIntegerField(
         null=True,
         blank=True
     )
@@ -33,3 +33,6 @@ class Announcement(TimeStampedModel, TitleDescriptionModel):
         settings.AUTH_USER_MODEL,
         related_name='applied_to'
     )
+
+    class Meta:
+        ordering = ('-created',)

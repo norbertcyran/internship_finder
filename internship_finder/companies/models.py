@@ -27,6 +27,10 @@ class Company(models.Model):
         help_text=_('Users with access to manage company page and offers.')
     )
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name_plural = 'companies'
+
 
 class Office(models.Model):
     company = models.ForeignKey(
