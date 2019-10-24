@@ -29,30 +29,29 @@ class Announcement(TimeStampedModel, TitleDescriptionModel):
         blank=True
     )
 
-    applicants = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name='enrollments',
-        through='Enrollment'
-    )
-
     class Meta:
         ordering = ('-created',)
 
 
-class Enrollment(TimeStampedModel):
+class Application(TimeStampedModel):
     """Model representing single enrollment for an internship."""
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='applications'
     )
 
     announcement = models.ForeignKey(
         Announcement,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='applications'
     )
 
+    full_name = models.CharField(max_length=100)
+
+    email = models.EmailField()
+
+    cv = models.FileField()
+
     additional_message = models.TextField(blank=True, null=True)
-
-
-class EnrollmentData(models.Model):
-    pass
