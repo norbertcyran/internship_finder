@@ -29,6 +29,9 @@ class Announcement(TimeStampedModel, TitleDescriptionModel):
         blank=True
     )
 
+    def __str__(self):
+        return f'{self.title} at {self.company}'
+
     class Meta:
         ordering = ('-created',)
 

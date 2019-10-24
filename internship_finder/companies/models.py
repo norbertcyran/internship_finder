@@ -27,6 +27,9 @@ class Company(models.Model):
         help_text=_('Users with access to manage company page and offers.')
     )
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         ordering = ('name',)
         verbose_name_plural = 'companies'
@@ -46,4 +49,7 @@ class Office(models.Model):
     postal_code = models.CharField(max_length=20)
 
     country = CountryField()
+
+    def __str__(self):
+        return f'{self.company} - {self.address}, {self.city}, {self.country}'
 
