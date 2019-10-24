@@ -115,7 +115,12 @@ AUTH_USER_MODEL = 'accounts.User'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+LANGUAGES = [
+    ('en', 'English'),
+    ('pl', 'Polski')
+]
+
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
