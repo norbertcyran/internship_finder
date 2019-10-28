@@ -1,33 +1,35 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar
+            app
+            color="blue darken-3"
+            dark
+            clipped-left
+    >
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span class="font-weight-light">INTERNSHIP FINDER</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+      <v-btn text>Sign up</v-btn>
+      <v-btn text class="mr-3">Log in</v-btn>
+      <v-avatar size="32px">
+        <v-img :src="require('./assets/logo.svg')"></v-img>
+      </v-avatar>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+        <Announcements/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import Announcements from "./components/Announcements";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Announcements
   },
   data: () => ({
     //
