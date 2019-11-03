@@ -7,15 +7,24 @@
         <v-card-title v-text="title" class="mb-2">
         </v-card-title>
         <v-card-subtitle>
-          <span class="mr-3">
-            <v-icon class="mr-1">mdi-domain</v-icon>
-            <span>{{ company.name }}</span>
-          </span>
-          <span class="mr-3">
-            <v-icon class="mr-1">mdi-map-marker</v-icon>
-            <span>{{ location }}</span>
-          </span>
-          <span class="font-weight-bold green--text darken-3">{{ payRange }}</span>
+          <v-row>
+            <v-col cols="12" md="auto" class="py-1 pr-0">
+              <span class="mr-3">
+                <v-icon class="mr-1">mdi-domain</v-icon>
+                <span>{{ company.name }}</span>
+              </span>
+            </v-col>
+            <v-col cols="12" md="auto" class="py-1 pr-0 pl-md-0">
+              <span class="mr-3">
+                <v-icon class="mr-1">mdi-map-marker</v-icon>
+                <span>{{ location }}</span>
+              </span>
+            </v-col>
+            <v-col cols="12" md="auto" class="py-1 pr-0 pl-md-0">
+              <v-icon class="mr-1">mdi-cash-multiple</v-icon>
+              <span class="font-weight-bold green--text darken-3">{{ payRange }}</span>
+            </v-col>
+          </v-row>
         </v-card-subtitle>
       </div>
       <div>

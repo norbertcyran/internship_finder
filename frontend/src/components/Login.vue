@@ -30,7 +30,12 @@
           </v-row>
           <v-row class="text-center">
             <v-col>
-              Forgot your password? <a href="">Click here</a>.
+              Forgot your password? <router-link to="/forgot-password">Click here</router-link>.
+            </v-col>
+          </v-row>
+          <v-row class="text-center">
+            <v-col>
+              Do not have an account? <router-link to="/register">Register</router-link>.
             </v-col>
           </v-row>
         </v-form>
