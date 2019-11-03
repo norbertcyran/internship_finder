@@ -7,7 +7,7 @@
        >
            <v-col
              cols="12"
-             class="pa-1"
+             class="py-1"
            >
                 <Announcement
                   v-bind="announcement"
