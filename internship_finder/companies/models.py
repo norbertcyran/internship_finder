@@ -46,10 +46,12 @@ class Office(models.Model):
 
     city = models.CharField(max_length=50)
 
-    postal_code = models.CharField(max_length=20)
-
     country = CountryField()
 
     def __str__(self):
         return f'{self.company} - {self.address}, {self.city}, {self.country}'
+
+    @property
+    def address_text(self):
+        return f'{self.address}, {self.city}'
 
