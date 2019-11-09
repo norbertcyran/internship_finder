@@ -21,12 +21,14 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
 
+from .accounts.views import UserViewSet
 from .announcements.views import AnnouncementViewSet, ApplicationViewSet
 from .companies.views import CompanyViewSet, OfficeViewSet
 
 router = DefaultRouter()
 router.register(r'companies', CompanyViewSet)
 router.register(r'announcements', AnnouncementViewSet)
+router.register(r'users', UserViewSet)
 
 companies_router = NestedSimpleRouter(router, r'companies', lookup='company')
 companies_router.register(r'offices', OfficeViewSet, base_name='company-offices')
