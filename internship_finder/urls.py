@@ -21,16 +21,22 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
 
+from .announcements.views import AnnouncementViewSet, ApplicationViewSet
 from .companies.views import CompanyViewSet, OfficeViewSet
 
 router = DefaultRouter()
 router.register(r'companies', CompanyViewSet)
+router.register(r'announcements', AnnouncementViewSet)
 
 companies_router = NestedSimpleRouter(router, r'companies', lookup='company')
 companies_router.register(r'offices', OfficeViewSet, base_name='company-offices')
 
+announcements_router = NestedSimpleRouter(router, r'announcements', lookup='announcement')
+announcements_router.register(r'applications', ApplicationViewSet, base_name='announcement-applications')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/', include(companies_router.urls))
+    path('api/', include(companies_router.urls)),
+    path('api/', include(announcements_router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

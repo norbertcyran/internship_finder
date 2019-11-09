@@ -15,3 +15,7 @@ class OfficeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Office.objects.filter(company=self.kwargs['company_pk'])
+
+    def perform_create(self, serializer):
+        company = Company.objects.get(pk=self.kwargs['company_pk'])
+        serializer.save(company=company)

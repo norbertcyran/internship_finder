@@ -1,6 +1,12 @@
+import uuid
+
 from django.db import models
 from django.conf import settings
 from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
+
+
+def get_cv_path(instance: 'Application', filename: str):
+    return f'announcements/{instance.announcement.id}/cvs/{filename}_{uuid.uuid4()}'
 
 
 class Announcement(TimeStampedModel, TitleDescriptionModel):
@@ -42,6 +48,7 @@ class Application(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='applications'
     )
 
@@ -55,6 +62,6 @@ class Application(TimeStampedModel):
 
     email = models.EmailField()
 
-    cv = models.FileField()
+    cv = models.FileField(upload_to=get_cv_path, verbose_name='CV')
 
     additional_message = models.TextField(blank=True, null=True)
