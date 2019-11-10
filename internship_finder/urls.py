@@ -41,5 +41,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(companies_router.urls)),
     path('api/', include(announcements_router.urls)),
-    path('auth/', include('rest_auth.urls'))
+    path('api/auth/', include('rest_auth.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
