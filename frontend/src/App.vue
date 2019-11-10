@@ -16,11 +16,16 @@
         >INTERNSHIP FINDER</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn class="mr-1" text>Sign up</v-btn>
-      <v-btn text class="mr-3" to="/login" exact>Log in</v-btn>
-      <v-avatar size="32px">
-        <v-img :src="require('./assets/logo.svg')"></v-img>
-      </v-avatar>
+      <template v-if="!isAuthenticated" >
+        <v-btn class="mr-1" text>Sign up</v-btn>
+        <v-btn text to="/login" exact>Login</v-btn>
+      </template>
+      <template v-else>
+        <v-btn text class="mr-3" @click="logout">Logout</v-btn>
+        <v-avatar size="32px">
+          <v-img :src="require('./assets/logo.svg')"></v-img>
+        </v-avatar>
+      </template>
     </v-app-bar>
     <v-content>
       <router-view></router-view>
@@ -29,14 +34,22 @@
 </template>
 
 <script>
-
+import { mapGetters, mapActions } from 'vuex';
+import { LOGOUT } from "./store/action-types";
 export default {
   name: 'App',
   data: () => ({
     //
   }),
-  created() {
-
+  computed: {
+      ...mapGetters([
+          'isAuthenticated'
+      ])
+  },
+  methods: {
+      ...mapActions({
+          logout: LOGOUT
+      })
   }
 };
 </script>

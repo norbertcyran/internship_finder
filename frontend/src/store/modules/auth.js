@@ -7,7 +7,8 @@ import {LOGIN, LOGOUT} from "../action-types";
 
 const state = {
     token: localStorage.getItem('token') || '',
-    status: ''
+    status: '',
+    error: null
 };
 
 const getters = {
@@ -20,11 +21,13 @@ const mutations = {
     },
     [LOGIN_SUCCESS] (state, payload) {
         state.token = payload.key;
-        state.status = 'success'
+        state.status = 'success';
+        state.error = null;
     },
-    [LOGIN_FAILURE] (state) {
+    [LOGIN_FAILURE] (state, payload) {
         state.token = '';
         state.status = 'failure';
+        state.error = payload['non_field_errors'].join("\n");
     },
     [LOGOUT_REQUEST] (state) {
         state.status = 'loading';
@@ -32,27 +35,29 @@ const mutations = {
     [LOGOUT_SUCCESS] (state) {
         state.status = 'success';
         state.token = '';
+        state.error = null;
     },
-    [LOGIN_FAILURE] (state) {
+    [LOGIN_FAILURE] (state, payload) {
         state.status = 'failure';
+        state.error = payload['non_field_errors'].join("\n");
     }
 };
 
 const actions = {
     async [LOGIN] ({ commit }, { email, password }) {
         commit(LOGIN_REQUEST);
-        login(email, password)
-            .then(rsp => {
-                const token = rsp.data.key;
-                api.defaults.headers.common['Authorization'] = `Token ${token}`;
-                localStorage.setItem('token', token);
-                commit(LOGIN_SUCCESS, rsp.data);
-            })
-            .catch(err => {
-                commit(LOGIN_FAILURE, err);
-                delete api.defaults.headers.common['Authorization'];
-                localStorage.removeItem('token');
-            });
+        try {
+            const rsp = await login(email, password);
+            const token = rsp.data.key;
+            api.defaults.headers.common['Authorization'] = `Token ${token}`;
+            localStorage.setItem('token', token);
+            commit(LOGIN_SUCCESS, rsp.data);
+        }
+        catch (err) {
+            commit(LOGIN_FAILURE, err.response.data);
+            delete api.defaults.headers.common['Authorization'];
+            localStorage.removeItem('token');
+        }
     },
     async [LOGOUT] ({ commit }) {
         commit(LOGOUT_REQUEST);
@@ -62,8 +67,8 @@ const actions = {
                 delete api.defaults.headers.common['Authorization'];
                 localStorage.removeItem('token');
             })
-            .catch(() => {
-                commit(LOGOUT_FAILURE);
+            .catch((error) => {
+                commit(LOGOUT_FAILURE, error.response.data);
             });
     }
 };
