@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .permissions import OwnerPermission
+from .permissions import CanEditUser
 from .serializers import UserSerializer
 from .models import User
 
@@ -11,7 +11,7 @@ from .models import User
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [OwnerPermission]
+    permission_classes = (CanEditUser,)
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def me(self, request, *args, **kwargs):
