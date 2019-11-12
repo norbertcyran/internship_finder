@@ -1,5 +1,5 @@
-import {login, logout} from "../../api/auth";
-import api from "../../api";
+import {login, logout} from "@/api/auth";
+import api from "@/api";
 import {
     LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS
 } from "../mutation-types";
