@@ -28,8 +28,9 @@
         </v-card-subtitle>
       </div>
       <div>
-        <v-avatar size="64px" class="mx-4">
-          <v-icon large>mdi-camera</v-icon>
+        <v-avatar size="80px" class="mx-4">
+          <v-img v-if="company.logo" :src="company.logo"></v-img>
+          <v-icon v-else large>mdi-camera</v-icon>
         </v-avatar>
       </div>
     </div>
@@ -39,7 +40,7 @@
 
 <script>
     export default {
-        name: "Announcement",
+        name: "AnnouncementListItem",
         props: {
             title: {
                 type: String,
@@ -47,14 +48,20 @@
             },
             company: {
                 type: Object,
-                required: true
+                required: true,
             },
             paid: {
                 type: Boolean,
                 required: true
             },
-            payRange: String,
+            payRangeTop: Number,
+            payRangeBottom: Number,
             location: String
+        },
+        computed: {
+            payRange() {
+                return `${this.payRangeBottom} - ${this.payRangeTop} PLN`
+            }
         }
     }
 </script>
