@@ -4,7 +4,8 @@
   >
     <div class="d-flex align-center justify-space-between">
       <div>
-        <v-card-title v-text="title" class="mb-2">
+        <v-card-title class="mb-2">
+          <router-link :to="getDetailURL">{{ title }}</router-link>
         </v-card-title>
         <v-card-subtitle>
           <v-row>
@@ -42,6 +43,10 @@
     export default {
         name: "AnnouncementListItem",
         props: {
+            id: {
+                type: Number,
+                required: true
+            },
             title: {
                 type: String,
                 required: true
@@ -61,6 +66,9 @@
         computed: {
             payRange() {
                 return `${this.payRangeBottom} - ${this.payRangeTop} PLN`
+            },
+            getDetailURL() {
+                return `/announcements/${this.id}`
             }
         }
     }

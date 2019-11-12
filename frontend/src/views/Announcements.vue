@@ -10,6 +10,7 @@
              class="py-1"
            >
                 <VAnnouncement
+                  :id="announcement.id"
                   :title="announcement.title"
                   :company="announcement.company"
                   :location="announcement.location"
