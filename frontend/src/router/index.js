@@ -1,7 +1,7 @@
 import VueRouter from "vue-router";
-import Announcements from "./views/Announcements";
-import Login from "./views/Login";
-import store from "./store";
+import Announcements from "@/views/Announcements";
+import Login from "@/views/Login";
+import store from "@/store";
 import AnnouncementDetail from "@/views/AnnouncementDetail";
 
 
