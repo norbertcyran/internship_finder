@@ -1,10 +1,20 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
+from internship_finder.companies.models import Company
+from internship_finder.companies.serializers import ShortCompanySerializer
 from .models import Announcement, Application
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
     location = serializers.CharField(source='office.address_text', read_only=True)
+    company = ShortCompanySerializer(read_only=True)
+    company_id = serializers.PrimaryKeyRelatedField(
+        queryset=Company.objects.all(),
+        write_only=True,
+        label=_('Company'),
+        source='company'
+    )
 
     class Meta:
         model = Announcement
@@ -13,6 +23,7 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'company',
+            'company_id',
             'location',
             'office',
             'paid',
