@@ -16,7 +16,7 @@ const ifNotAuthenticated = (to, from, next) => {
 const routes = [
     { path: '/', component: Announcements },
     { path: '/announcements', component: Announcements },
-    { path: '/announcements/:announcement_id', component: AnnouncementDetail, prop: true },
+    { path: '/announcements/:announcementId', component: AnnouncementDetail, props: true },
     { path: '/login', component: Login, beforeEnter: ifNotAuthenticated },
     { path: '*', component: PageNotFound }
 ];

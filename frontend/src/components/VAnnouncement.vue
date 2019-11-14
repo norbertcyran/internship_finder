@@ -2,46 +2,25 @@
   <v-card
     class="mx-auto"
   >
-    <div class="d-flex align-center justify-space-between">
-      <div>
-        <v-card-title class="mb-2">
-          <router-link :to="getDetailURL">{{ title }}</router-link>
-        </v-card-title>
-        <v-card-subtitle>
-          <v-row>
-            <v-col cols="12" md="auto" class="py-1 pr-0">
-              <span class="mr-3">
-                <v-icon class="mr-1">mdi-domain</v-icon>
-                <span>{{ company.name }}</span>
-              </span>
-            </v-col>
-            <v-col cols="12" md="auto" class="py-1 pr-0 pl-md-0">
-              <span class="mr-3">
-                <v-icon class="mr-1">mdi-map-marker</v-icon>
-                <span>{{ location }}</span>
-              </span>
-            </v-col>
-            <v-col cols="12" md="auto" class="py-1 pr-0 pl-md-0">
-              <v-icon class="mr-1">mdi-cash-multiple</v-icon>
-              <span class="font-weight-bold green--text darken-3">{{ payRange }}</span>
-            </v-col>
-          </v-row>
-        </v-card-subtitle>
-      </div>
-      <div>
-        <v-avatar size="80px" class="mx-4">
-          <v-img v-if="company.logo" :src="company.logo"></v-img>
-          <v-icon v-else large>mdi-camera</v-icon>
-        </v-avatar>
-      </div>
-    </div>
+    <VAnnouncementHeader
+      :to="getDetailURL"
+      :id="id"
+      :location="location"
+      :company="company"
+      :paid="paid"
+      :pay-range-bottom="payRangeBottom"
+      :pay-range-top="payRangeTop"
+      :title="title"
+    ></VAnnouncementHeader>
   </v-card>
 
 </template>
 
 <script>
+    import VAnnouncementHeader from "@/components/VAnnouncementHeader";
     export default {
         name: "AnnouncementListItem",
+        components: {VAnnouncementHeader},
         props: {
             id: {
                 type: Number,
@@ -64,9 +43,6 @@
             location: String
         },
         computed: {
-            payRange() {
-                return `${this.payRangeBottom} - ${this.payRangeTop} PLN`
-            },
             getDetailURL() {
                 return `/announcements/${this.id}`
             }
