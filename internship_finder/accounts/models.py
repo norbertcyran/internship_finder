@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django_extensions.db.models import TimeStampedModel
 
 
 class UserManager(BaseUserManager):
@@ -39,6 +40,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    STUDENT_TYPE = 'student'
+    COMPANY_TYPE = 'company'
+    USER_TYPE_CHOICES = (
+        (STUDENT_TYPE, _('Student')),
+        (COMPANY_TYPE, _('Company')),
+    )
+
     email = models.EmailField(
         _('email address'),
         unique=True,
@@ -48,6 +56,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
+
+    user_type = models.CharField(
+        max_length=20,
+        choices=USER_TYPE_CHOICES,
+        default=STUDENT_TYPE
+    )
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -91,3 +105,29 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Major(models.Model):
+    """Model representing academic major."""
+    name = models.CharField(max_length=100)
+
+
+class StudentProfile(TimeStampedModel):
+    """Model storing student's profile data."""
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        primary_key=True,
+    )
+
+    github_profile = models.URLField(null=True, blank=True)
+
+    linkedin_profile = models.URLField(null=True, blank=True)
+
+    major = models.ForeignKey(
+        'Major',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
