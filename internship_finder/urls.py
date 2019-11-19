@@ -21,7 +21,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
 
-from .accounts.views import UserViewSet
+from .accounts.views import UserViewSet, StudentRegistrationAPIView
 from .announcements.views import AnnouncementViewSet, ApplicationViewSet
 from .companies.views import CompanyViewSet, OfficeViewSet
 
@@ -41,5 +41,6 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(companies_router.urls)),
     path('api/', include(announcements_router.urls)),
-    path('api/auth/', include('rest_auth.urls'))
+    path('api/auth/', include('rest_auth.urls')),
+    path('api/auth/register_student', StudentRegistrationAPIView.as_view(), name='register_student'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
