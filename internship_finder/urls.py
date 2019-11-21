@@ -41,6 +41,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/', include(companies_router.urls)),
     path('api/', include(announcements_router.urls)),
-    path('api/auth/', include('rest_auth.urls')),
-    path('api/auth/register_student', StudentRegistrationAPIView.as_view(), name='register_student'),
+    path('api/auth/', include('internship_finder.accounts.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

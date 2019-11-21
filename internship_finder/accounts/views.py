@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .permissions import CanEditUser
-from .serializers import UserSerializer, StudentRegistrationSerializer
+from .serializers import UserSerializer, StudentRegistrationSerializer, CompanyRegistrationSerializer
 from .models import User
 
 
@@ -26,4 +26,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class StudentRegistrationAPIView(CreateAPIView):
     serializer_class = StudentRegistrationSerializer
+    queryset = User.objects.all()
+
+
+class CompanyRegistrationAPIView(CreateAPIView):
+    serializer_class = CompanyRegistrationSerializer
     queryset = User.objects.all()

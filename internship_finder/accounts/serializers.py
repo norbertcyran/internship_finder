@@ -1,6 +1,8 @@
 from django.utils.translation import gettext as _
 from rest_framework import serializers
 
+from internship_finder.companies.models import Company
+from internship_finder.companies.serializers import CompanySerializer
 from .models import User, StudentProfile
 
 
@@ -37,8 +39,18 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ('email', 'is_staff', 'is_superuser', 'date_joined')
 
 
-class StudentRegistrationSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError(_('Passwords are not the same!'))
+        data = super().validate(attrs)
+        data.pop('password2')
+        return data
+
+
+class StudentRegistrationSerializer(RegistrationSerializer):
     profile = ProfileSerializer()
 
     class Meta:
@@ -53,18 +65,37 @@ class StudentRegistrationSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {'password': {'write_only': True, 'style': {'input_type': 'password'}}}
 
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError(_('Passwords are not the same!'))
-        data = super().validate(attrs)
-        data.pop('password2')
-        return data
-
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
 
         user = User.objects.create_user(**validated_data, user_type=User.STUDENT_TYPE)
 
         StudentProfile.objects.create(user=user, **profile_data)
+
+        return user
+
+
+class CompanyRegistrationSerializer(RegistrationSerializer):
+    company = CompanySerializer()
+
+    class Meta:
+        model = User
+        fields = (
+            'email',
+            'first_name',
+            'last_name',
+            'password',
+            'password2',
+            'company'
+        )
+        extra_kwargs = {'password': {'write_only': True, 'style': {'input_type': 'password'}}}
+
+    def create(self, validated_data):
+        company_data = validated_data.pop('company')
+
+        user = User.objects.create_user(**validated_data, user_type=User.COMPANY_TYPE)
+
+        company = Company.objects.create(**company_data)
+        company.managers.add(user)
 
         return user
