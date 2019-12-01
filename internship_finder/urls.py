@@ -21,6 +21,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested.routers import NestedSimpleRouter
 
+from internship_finder.tags.views import TagViewSet
 from .accounts.views import UserViewSet, StudentRegistrationAPIView
 from .announcements.views import AnnouncementViewSet, ApplicationViewSet
 from .companies.views import CompanyViewSet, OfficeViewSet
@@ -29,6 +30,7 @@ router = DefaultRouter()
 router.register(r'companies', CompanyViewSet)
 router.register(r'announcements', AnnouncementViewSet)
 router.register(r'users', UserViewSet)
+router.register(r'tags', TagViewSet)
 
 companies_router = NestedSimpleRouter(router, r'companies', lookup='company')
 companies_router.register(r'offices', OfficeViewSet, base_name='company-offices')

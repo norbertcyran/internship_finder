@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'internship_finder.accounts',
     'internship_finder.announcements',
     'internship_finder.companies',
+    'internship_finder.tags',
 ]
 
 MIDDLEWARE = [

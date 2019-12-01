@@ -76,7 +76,7 @@ class StudentRegistrationSerializer(RegistrationSerializer):
 
 
 class CompanyRegistrationSerializer(RegistrationSerializer):
-    company = CompanySerializer()
+    company = CompanySerializer(write_only=True)
 
     class Meta:
         model = User
