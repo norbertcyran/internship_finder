@@ -3,17 +3,32 @@ from rest_framework import serializers
 
 from internship_finder.companies.models import Company
 from internship_finder.companies.serializers import CompanySerializer
+from internship_finder.tags.models import Tag
+from internship_finder.tags.serializers import TagSerializerField
 from .models import User, StudentProfile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    followed_tags = TagSerializerField()
+
     class Meta:
         model = StudentProfile
         fields = (
             'github_profile',
             'linkedin_profile',
-            'major'
+            'major',
+            'followed_tags',
         )
+
+    def update(self, instance, validated_data):
+        tags = validated_data.pop('followed_tags')
+        instance = super().update(instance, validated_data)
+
+        instance.followed_tags.clear()
+        for tag_name in tags:
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            instance.followed_tags.add(tag)
+        return instance
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -67,10 +82,14 @@ class StudentRegistrationSerializer(RegistrationSerializer):
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
+        tags = profile_data.pop('tags')
 
         user = User.objects.create_user(**validated_data, user_type=User.STUDENT_TYPE)
 
-        StudentProfile.objects.create(user=user, **profile_data)
+        profile = StudentProfile.objects.create(user=user, **profile_data)
+        for tag_name in tags:
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            profile.followed_tags.add(tag)
 
         return user
 

@@ -27,16 +27,16 @@ from .announcements.views import AnnouncementViewSet, ApplicationViewSet
 from .companies.views import CompanyViewSet, OfficeViewSet
 
 router = DefaultRouter()
-router.register(r'companies', CompanyViewSet)
-router.register(r'announcements', AnnouncementViewSet)
-router.register(r'users', UserViewSet)
-router.register(r'tags', TagViewSet)
+router.register(r'companies', CompanyViewSet, basename='companies')
+router.register(r'announcements', AnnouncementViewSet, basename='announcements')
+router.register(r'users', UserViewSet, basename='users')
+router.register(r'tags', TagViewSet, basename='tags')
 
 companies_router = NestedSimpleRouter(router, r'companies', lookup='company')
-companies_router.register(r'offices', OfficeViewSet, base_name='company-offices')
+companies_router.register(r'offices', OfficeViewSet, basename='company-offices')
 
 announcements_router = NestedSimpleRouter(router, r'announcements', lookup='announcement')
-announcements_router.register(r'applications', ApplicationViewSet, base_name='announcement-applications')
+announcements_router.register(r'applications', ApplicationViewSet, basename='announcement-applications')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

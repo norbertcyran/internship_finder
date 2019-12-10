@@ -4,6 +4,8 @@ from django.db import models
 from django.conf import settings
 from django_extensions.db.models import TimeStampedModel, TitleDescriptionModel
 
+from internship_finder.tags.models import Tag
+
 
 def get_cv_path(instance: 'Application', filename: str):
     return f'announcements/{instance.announcement.id}/cvs/{filename}_{uuid.uuid4()}'
@@ -33,6 +35,11 @@ class Announcement(TimeStampedModel, TitleDescriptionModel):
     pay_range_top = models.PositiveIntegerField(
         null=True,
         blank=True
+    )
+
+    tags = models.ManyToManyField(
+        Tag,
+        related_name='announcements'
     )
 
     def __str__(self):

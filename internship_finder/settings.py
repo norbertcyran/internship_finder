@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'corsheaders',
+    'django_extensions',
 
     'internship_finder.accounts',
     'internship_finder.announcements',

@@ -2,17 +2,22 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from internship_finder.accounts import permissions
 from .serializers import AnnouncementSerializer, ApplicationSerializer
 from .models import Announcement, Application
 
 
 class AnnouncementViewSet(viewsets.ModelViewSet):
-    queryset = Announcement.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'apply':
             return ApplicationSerializer
         return AnnouncementSerializer
+
+    def get_queryset(self):
+        if self.action == 'recommended':
+            return self.request.user.profile.get_recommended_announcements()
+        return Announcement.objects.all()
 
     @action(detail=True, methods=['post'])
     def apply(self, request, pk=None):
@@ -26,6 +31,10 @@ class AnnouncementViewSet(viewsets.ModelViewSet):
 
         headers = self.get_success_headers(application_serializer.data)
         return Response(application_serializer.data, status=201, headers=headers)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsStudent])
+    def recommended(self, request, **kwargs):
+        return self.list(request, **kwargs)
 
 
 class ApplicationViewSet(viewsets.ReadOnlyModelViewSet):

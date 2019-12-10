@@ -2,9 +2,13 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models import Count, Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
+
+from internship_finder.announcements.models import Announcement
+from internship_finder.tags.models import Tag
 
 
 class UserManager(BaseUserManager):
@@ -131,3 +135,12 @@ class StudentProfile(TimeStampedModel):
         blank=True,
         on_delete=models.SET_NULL
     )
+
+    followed_tags = models.ManyToManyField(Tag, related_name='followers')
+
+    def get_recommended_announcements(self):
+        tags_count = Count('tags', filter=Q(tags__followers=self))
+        return Announcement.objects.annotate(
+            matching_tags=tags_count
+        ).filter(matching_tags__gte=1).order_by('-matching_tags')[:10]
+
