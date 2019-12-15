@@ -13,6 +13,9 @@ djangorestframework = "*"
 pillow = "*"
 django-countries = "*"
 django-extensions = "*"
+drf-nested-routers = "*"
+django-rest-auth = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
